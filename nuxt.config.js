@@ -14,6 +14,7 @@ module.exports = {
   ],
   css: [
     // Load a node.js module
+    'font-awesome/css/font-awesome.css',
     'bulma/css/bulma.css',
     // node.js module but we specify the lang
     //{ src: 'bulma', lang: 'sass' },
