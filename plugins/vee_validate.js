@@ -34,12 +34,12 @@ const messages = {
 if (process.BROWSER_BUILD) {
 
   var config = {
-    locale: 'zh_CN'
+    locale: 'zh_CN',
+    dictionary: {
+      zh_CN: {  // locale key
+        messages // English attributes
+      }  
+    }
   }
   Vue.use(VeeValidate, config)
-  Validator.updateDictionary({
-    zh_CN: {  // locale key
-      messages // English attributes
-    }
-  });
 }

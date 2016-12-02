@@ -1,139 +1,41 @@
 <template lang="pug">
-div.irs
-  div.irs-content
-    section.hero
-      div.hero-head
-        div.race-header(style="background-image: url('/images/home_banner.jpg')")
-          h1.title.is-4.
-            上海国际马拉松 
-      div.hero-foot
-        div.container
-          nav.level
-            nav.level-item.has-text-centered
-              div.stars-container
-                div.stars
-                  img(src="/images/star-on-b.png", alt="1", title="Stars")
-                  img(src="/images/star-on-b.png", alt="1", title="Stars")
-                  img(src="/images/star-on-b.png", alt="1", title="Stars")
-                  img(src="/images/star-on-b.png", alt="1", title="Stars")
-                  img(src="/images/star-on-b.png", alt="1", title="Stars")   
-                div.join_count.
-                  1632人参加    
-    nav.level
-      nav.level-item.has-text-centered.race-center-buttons
-        a.button 预计参加
-        a.button.is-primary 已关注
-    section.section
-      div.container
-        h5.title.is-5.bold 赛事章程
-        div.columns.race-rules
-          div.column
-            label 比赛时间:
-            span 2016-12-16
-        div.columns.race-rules
-          div.column
-            label 比赛地点:
-            span 上海市黄浦区
-        div.columns.race-rules
-          div.column
-            label 报名时间:
-            span 2016年08月29日开始-2016年09月02日结束
-        div.columns.race-rules
-          div.column
-            label 报名组别:
-            span 全程马拉松／半程马拉松／10公里／健身跑
-        div.columns.race-rules
-          div.column
-            label 官方网站:
-            span http://www.shmarathon.com
-        div.columns.race-rules
-          div.column
-            label 报名组别:
-            span 全程马拉松／半程马拉松／10公里／健身跑
-        div.columns.race-rules
-          div.column
-            label 官方网站:
-            span http://www.shmarathon.com
-  footer
-    div.container
-      nav.level
-        div.level-item
-          a(href="/race_groups", class="button irs-red") 一键报名
-          a.button 成绩照片认领
+div.intro-container
+  section.section
+    div.container.has-text-centered
+      h2.title.is-4 已实现的页面列表
+      p
+        router-link.button(to="/race") 赛事页面
+      p
+        router-link.button(to="/race_groups") 分组页面
+      p
+        router-link.button(to="/team")  团队报名页面(含表单)
+      p
+        router-link.button(to="/pay") 付款页面
+      p
+        router-link.button(to="/pay_success") 付款成功页面
+      p
+        router-link.button(to="/my_orders")  订单查询页面
+      p
+        router-link.button(to="/search_reg") 报名查询页面
 
 </template>
 
 <script>
 export default {
   data: () => {
-    return { name: 'world' }
+    return { }
   },
    head: {
-    title: 'Home page 🚀'
+    title: '已实现的页面列表'
   }
 }
 </script>
 
 <style lang="stylus">
-  .button.irs-red:hover, .button.irs-red:focus, .button.irs-red.is-active, .button.irs-red
-    background-color: #dd2f00
-    border-color: transparent
-    color: white
-
-  .irs
-    background-color:#ffffff
-    display: flex
+  div.intro-container
+    background-color: #ffffff
     min-height: 100vh
-    flex-direction: column
-    div.irs-content
-      flex: 1 0 auto
-    footer
-      flex: none
-      padding: 10px 0
-      background-color: #cccccc
-      a.button
-        margin-left: 10px
-  .race-rules
-    label
-      min-width: 70px
-      text-align: left
-      display: inline-block
-    span
-      display: inline-block
-    color: #999999
-  .bold
-    font-weight: bold
-  .race-header
-    background-color: rgba(0, 0, 0, 0)
-    background-repeat: no-repeat
-    background-size: cover
-    background-position: center center
-    position: relative
-    min-height: 300px;
-
-    h1
-      text-align: center
-      color: #ffffff
-      position: absolute
-      width: 100%
-      left: 0
-      bottom: 50px
-
-  .stars-container
-    text-align: center
-    padding: 10px 0
-    div.stars
-      display: inline-block
-      margin-right: 10px
-      img
-        display: inline-block
-        margin-right: 2px
-
-    div.join_count
-      display: inline-block
-  
-  .race-center-buttons
-    a.button + a.button
-      margin-left: 10px
-
+    p+p 
+      margin-top: 20px
+          
 </style>
