@@ -6,7 +6,7 @@
       span.group_intro_full(v-show="show_full_intro", v-on:click="toggleIntro") {{group.full_intro}}
     td 免费
     td 
-      a(href="/team", class="button is-primary") 报名
+      router-link.button.is-primary(to="/team") 报名
 </template>
 
 <script>

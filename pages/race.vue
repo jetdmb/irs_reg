@@ -58,7 +58,7 @@ div.irs
     div.container
       nav.level
         div.level-item
-          a(href="/race_groups", class="button irs-red") 一键报名
+          router-link.button.irs-red(to="/race_groups") 一键报名
           a.button 成绩照片认领
 
 </template>

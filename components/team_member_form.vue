@@ -9,8 +9,8 @@ div.team_member_form
       div.control-label
         label.label 真实姓名*
       p.control
-        input(type="text", v-validate="", placeholder="请输入", data-vv-rules="required", :class="{'input': true, 'is-danger': errors.has('name') }" name="name")
-        span(v-show="errors.has('name')", class="help is-danger") {{ errors.first('name') }}
+        input(type="text", v-model="name", placeholder="请输入", :class="{'input': true, 'is-danger': hasError('name') }" name="name", @blur="validateRequired('name', '姓名', name)")
+        span(v-show="hasError('name')", class="help is-danger") {{ firstError('name') }}
     div.control.is-horizontal
       div.control-label
         label.label 证件类型*
@@ -63,14 +63,14 @@ div.team_member_form
       div.control-label
         label.label 电子邮箱*
       p.control
-        input.input(type="text", v-validate="", placeholder="请输入电子邮箱", data-vv-rules="required|email", :class="{'input': true, 'is-danger': errors.has('email') }" name="email")    
-        span(v-show="errors.has('email')", class="help is-danger") {{ errors.first('email') }}
+        input.input(type="text", v-model="email", placeholder="请输入电子邮箱", :class="{'input': true, 'is-danger': hasError('email') }", name="email", @blur="validateRequired('email', '邮件', email) && validateEmail('email', '邮件', email)")    
+        span(v-show="hasError('email')", class="help is-danger") {{ firstError('email') }}
     div.control.is-horizontal
       div.control-label
         label.label 手机*
       p.control
-        input.input(type="text", v-validate="", placeholder="请输入11位手机号码", data-vv-rules="required", :class="{'input': true, 'is-danger': errors.has('phone') }" name="phone")  
-        span(v-show="errors.has('phone')", class="help is-danger") {{ errors.first('phone') }}
+        input.input(type="text", v-model="phone", placeholder="请输入11位手机号码", :class="{'input': true, 'is-danger': hasError('phone') }", name="phone", @blur="validateRequired('phone', '手机', phone) && validatePhone('phone', '手机', phone)")  
+        span(v-show="hasError('phone')", class="help is-danger") {{ firstError('phone') }}
     div.control.is-horizontal
       div.control-label
         label.label 服装颜色*
@@ -143,9 +143,15 @@ div.team_member_form
 
 <script>
 import myDatepicker from './vue_datepicker.vue'
+import validator from 'validator'
 export default {
   data () {
     return {
+      name: "",
+      email: "",
+      phone: "",
+      errorObject: {
+      },
       date: {
         time: ''
       },
@@ -209,7 +215,7 @@ export default {
   props: ['show_form'],
   computed: {
     form_error: function () {
-      return this.errors.any()
+      return this.anyError()
     }
   },
   components: {
@@ -220,11 +226,59 @@ export default {
       this.$emit("form_cancelled")
     },
     form_saved() {
-      this.$validator.validateAll()
-      if (!this.errors.any()) {
+      this.validateRequired('name', "姓名", this.name)
+      this.validateRequired('email', "邮件", this.email) && this.validateEmail('email', "邮件", this.email)
+      this.validateRequired('phone', "手机", this.phone) && this.validatePhone('phone', "手机", this.phone)
+
+      if (!this.anyError()) {
           this.$emit("form_saved")
       }
-    }
+    },
+    validateRequired(field, displayName, model) {
+      model = model || ""
+      var isValid = model.length > 0
+      this.removeError(field) 
+      if (!isValid) {
+        this.addError(field, displayName +  "不能为空")  
+      }
+      return isValid
+    },
+    validateEmail(field, displayName, model) {
+      var isValid = model.length > 0 && validator.isEmail(model)
+      this.removeError(field) 
+      if (!isValid) {
+        this.addError(field, displayName + "格式不正确")     
+      }
+      return isValid
+    },
+    validatePhone(field, displayName, model) {
+      var isValid = model.length > 0 && validator.isMobilePhone(model, 'zh-CN')
+      this.removeError(field)
+      if (!isValid) {
+        this.addError(field, displayName + "格式不正确")  
+      }
+      return isValid
+    },
+    hasError(name) {
+      return this.errorObject[name] && this.errorObject[name][0]
+    },
+    firstError(name){
+      this.errorObject[name] = this.errorObject[name] || []
+      return this.errorObject[name][0]
+    },
+    addError(name, message) {
+      var errArray = this.errorObject[name] || []
+      errArray.push(message)
+      this.errorObject = Object.assign({}, this.errorObject, { [name]:errArray })
+    },
+    removeError(name) {
+      this.errorObject = Object.assign({}, this.errorObject, { [name]: undefined })
+    },
+    anyError() {
+      return Object.keys(this.errorObject).some((key) => {
+        return this.errorObject[key] && this.errorObject[key][0]
+      })
+    },
   },
   head: {
     title: '创建团队'

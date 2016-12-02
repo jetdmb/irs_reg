@@ -7,11 +7,8 @@ module.exports = {
       vendor: 'vendor.js', // default: vendor.bundle.js
       app: 'app.js' // default: nuxt.bundle.js
     },
-    vendor: ['vee-validate']
+    vendor: ['validator']
   },
-  plugins: [
-    '~plugins/vee_validate.js'
-  ],
   css: [
     // Load a node.js module
     'font-awesome/css/font-awesome.css',
