@@ -7,8 +7,10 @@ module.exports = {
       vendor: 'vendor.js', // default: vendor.bundle.js
       app: 'app.js' // default: nuxt.bundle.js
     },
-    vendor: ['validator']
+    vendor: ['validator', 'vuelidate']
   },
+  plugins: ["~plugins/vuelidate.js"],
+  loading: false,
   css: [
     // Load a node.js module
     'font-awesome/css/font-awesome.css',

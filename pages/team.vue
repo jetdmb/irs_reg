@@ -1,5 +1,6 @@
 <template lang="pug">
 div.team_container
+  loading(v-if="isLoading")
   div.container
     h2.subtitle.is-5 海南马拉松-全程
     hr
@@ -61,10 +62,13 @@ div.team_container
 <script>
 import MemberForm from '../components/team_member_form.vue'
 import TeamMember from '../components/team_member.vue'
+import Loading from '../components/loading.vue'
 export default {
-  components: {MemberForm, TeamMember},
+  components: {MemberForm, TeamMember, Loading},
   data: () => {
     return {
+      isLoading: true,
+      validations: {},
       members: [ 
         {id: 1, name: "龙套", phone: "18801966666", email: "longtao@cc.tv"},
         {id: 2, name: "龙套2", phone: "18801966667", email: "longtao2@cc.tv"},
@@ -78,6 +82,11 @@ export default {
     title: '创建团队'
   },
   created() {
+    let raceID = 1325
+    setTimeout(()=>{
+      this.$store.dispatch('FetchFields', {raceID})
+      this.isLoading = false
+    }, 3000)
   },
   methods: {
     formCancelled: function() {
@@ -97,7 +106,7 @@ export default {
     },
     closeModal: function() {
       this.modalVisible = false
-    }
+    }, 
   }
 }
 </script>

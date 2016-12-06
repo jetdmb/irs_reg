@@ -4,13 +4,14 @@ div.team_member_form
     button.button.is-disabled.contacts 常用联系人
     h2.subtitle.is-5 
       |参赛者
-      span.is-danger(v-if="form_error") !!!
-    div.control.is-horizontal
+      span.is-danger(v-if="$v.$error") !!!
+    div.control.is-horizontal(v-for='field in fields')
       div.control-label
-        label.label 真实姓名*
+        label.label {{ field.display_name }}*
       p.control
-        input(type="text", v-model="name", placeholder="请输入", :class="{'input': true, 'is-danger': hasError('name') }" name="name", @blur="validateRequired('name', '姓名', name)")
-        span(v-show="hasError('name')", class="help is-danger") {{ firstError('name') }}
+        input.input(type="text", v-model="form[field.name]", :placeholder="field.placeholder", :class="{'input': true, 'is-danger': $v.form[field.name] && $v.form[field.name].$error }", :name="field.name", @blur="$v.form[field.name] && $v.form[field.name].$touch()")    
+        span.help.is-danger(v-for='v in field.validators' v-show="$v.form[field.name] && $v.form[field.name].$dirty && !$v.form[field.name][v]") {{field.display_name}}{{getValidationMessage(v)}}
+
     div.control.is-horizontal
       div.control-label
         label.label 证件类型*
@@ -59,18 +60,6 @@ div.team_member_form
         label.label 所在地*
       p.control
         input.input(type="text", placeholder="请输入")      
-    div.control.is-horizontal
-      div.control-label
-        label.label 电子邮箱*
-      p.control
-        input.input(type="text", v-model="email", placeholder="请输入电子邮箱", :class="{'input': true, 'is-danger': hasError('email') }", name="email", @blur="validateRequired('email', '邮件', email) && validateEmail('email', '邮件', email)")    
-        span(v-show="hasError('email')", class="help is-danger") {{ firstError('email') }}
-    div.control.is-horizontal
-      div.control-label
-        label.label 手机*
-      p.control
-        input.input(type="text", v-model="phone", placeholder="请输入11位手机号码", :class="{'input': true, 'is-danger': hasError('phone') }", name="phone", @blur="validateRequired('phone', '手机', phone) && validatePhone('phone', '手机', phone)")  
-        span(v-show="hasError('phone')", class="help is-danger") {{ firstError('phone') }}
     div.control.is-horizontal
       div.control-label
         label.label 服装颜色*
@@ -143,15 +132,32 @@ div.team_member_form
 
 <script>
 import myDatepicker from './vue_datepicker.vue'
-import validator from 'validator'
+import {validationMessageMap} from '../validators/index'
+import { validateModel } from 'vuelidate'
+
 export default {
+  beforeCreate: function () {
+    const options = this.$options
+    if (typeof options.computed === 'undefined') {
+      options.computed = {}
+    }
+    options.computed.fields = () => {
+      return this.$store.state.fields
+    }
+    options.computed.$v = () => {
+      
+      return validateModel(this, this.$store.state.validations)
+    }
+  },
   data () {
+    let keys = Object.keys(this.$store.state.validations.form)
+    let form = keys.reduce( (form, key) => {
+      form[key] = ""
+      return form
+      }, {});
+    console.log(form)
     return {
-      name: "",
-      email: "",
-      phone: "",
-      errorObject: {
-      },
+      form: form,
       date: {
         time: ''
       },
@@ -212,72 +218,28 @@ export default {
       }]
     }
   },
-  props: ['show_form'],
+  props: ['show_form', 'rules'],
   computed: {
     form_error: function () {
-      return this.anyError()
+      return this.$v.$error
     }
   },
   components: {
     'date-picker': myDatepicker
   },
   methods: {
+    getValidationMessage(v) {
+      return validationMessageMap[v]
+    },
     form_cancelled() {
       this.$emit("form_cancelled")
     },
     form_saved() {
-      this.validateRequired('name', "姓名", this.name)
-      this.validateRequired('email', "邮件", this.email) && this.validateEmail('email', "邮件", this.email)
-      this.validateRequired('phone', "手机", this.phone) && this.validatePhone('phone', "手机", this.phone)
-
-      if (!this.anyError()) {
+      console.log(this.form, this.$v)
+      this.$v.$touch()
+      if (!this.$v.$error) {
           this.$emit("form_saved")
       }
-    },
-    validateRequired(field, displayName, model) {
-      model = model || ""
-      var isValid = model.length > 0
-      this.removeError(field) 
-      if (!isValid) {
-        this.addError(field, displayName +  "不能为空")  
-      }
-      return isValid
-    },
-    validateEmail(field, displayName, model) {
-      var isValid = model.length > 0 && validator.isEmail(model)
-      this.removeError(field) 
-      if (!isValid) {
-        this.addError(field, displayName + "格式不正确")     
-      }
-      return isValid
-    },
-    validatePhone(field, displayName, model) {
-      var isValid = model.length > 0 && validator.isMobilePhone(model, 'zh-CN')
-      this.removeError(field)
-      if (!isValid) {
-        this.addError(field, displayName + "格式不正确")  
-      }
-      return isValid
-    },
-    hasError(name) {
-      return this.errorObject[name] && this.errorObject[name][0]
-    },
-    firstError(name){
-      this.errorObject[name] = this.errorObject[name] || []
-      return this.errorObject[name][0]
-    },
-    addError(name, message) {
-      var errArray = this.errorObject[name] || []
-      errArray.push(message)
-      this.errorObject = Object.assign({}, this.errorObject, { [name]:errArray })
-    },
-    removeError(name) {
-      this.errorObject = Object.assign({}, this.errorObject, { [name]: undefined })
-    },
-    anyError() {
-      return Object.keys(this.errorObject).some((key) => {
-        return this.errorObject[key] && this.errorObject[key][0]
-      })
     },
   },
   head: {
