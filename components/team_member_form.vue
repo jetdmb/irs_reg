@@ -10,7 +10,7 @@ div.team_member_form
         label.label {{ field.display_name }}*
       p.control
         input.input(type="text", v-model="form[field.name]", :placeholder="field.placeholder", :class="{'input': true, 'is-danger': $v.form[field.name] && $v.form[field.name].$error }", :name="field.name", @blur="$v.form[field.name] && $v.form[field.name].$touch()")    
-        span.help.is-danger(v-for='v in field.validators' v-show="$v.form[field.name] && $v.form[field.name].$dirty && !$v.form[field.name][v]") {{field.display_name}}{{getValidationMessage(v)}}
+        span.help.is-danger(v-for='v in field.namedValidators' v-show="$v.form[field.name] && $v.form[field.name].$dirty && !$v.form[field.name][v]") {{field.display_name}}{{field.errorMsg[v]}}
 
     div.control.is-horizontal
       div.control-label

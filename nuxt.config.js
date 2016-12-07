@@ -7,7 +7,7 @@ module.exports = {
       vendor: 'vendor.js', // default: vendor.bundle.js
       app: 'app.js' // default: nuxt.bundle.js
     },
-    vendor: ['validator', 'vuelidate']
+    vendor: ['validator', 'vuelidate', 'moment']
   },
   plugins: ["~plugins/vuelidate.js"],
   loading: false,
