@@ -366,7 +366,7 @@ table {
           </div>
         </div>
         <div class="button-box">
-          <span @click="showInfo.check=false">{{option.buttons? option.buttons.cancel : 'Cancel' }}</span>
+          <span @click="cancel">{{option.buttons? option.buttons.cancel : 'Cancel' }}</span>
           <span @click="picked">{{option.buttons? option.buttons.ok : 'Ok'}}</span>
         </div>
       </div>
@@ -492,6 +492,10 @@ exports.default = {
   },
 
   methods: {
+    cancel: function() {
+      this.showInfo.check=false
+      this.$emit('cancel')
+    },
     pad: function pad(n) {
       n = Math.floor(n);
       return n < 10 ? '0' + n : n;

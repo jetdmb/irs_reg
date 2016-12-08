@@ -9,7 +9,17 @@ div.team_member_form
       div.control-label
         label.label {{ field.display_name }}*
       p.control
-        input.input(type="text", v-model="form[field.name]", :placeholder="field.placeholder", :class="{'input': true, 'is-danger': $v.form[field.name] && $v.form[field.name].$error }", :name="field.name", @blur="$v.form[field.name] && $v.form[field.name].$touch()")    
+        label.checkbox(v-if="field.type === 'checkboxes'", v-for="option in field.options")
+          input(type="checkbox", :name="option.name", :id="option.name", v-model="form[field.name]", :value="option.value") 
+          span {{option.label}}
+        input.input(type="email", v-model="form[field.name]", :placeholder="field.placeholder", :class="{'input': true, 'is-danger': $v.form[field.name] && $v.form[field.name].$error }", :name="field.name", @blur="$v.form[field.name] && $v.form[field.name].$touch()" v-if="field.type === 'email'")  
+        input.input(type="number", v-model="form[field.name]", :placeholder="field.placeholder", :class="{'input': true, 'is-danger': $v.form[field.name] && $v.form[field.name].$error }", :name="field.name", @blur="$v.form[field.name] && $v.form[field.name].$touch()" v-if="field.type === 'number'")  
+        input.input(type="text", v-model="form[field.name]", :placeholder="field.placeholder", :class="{'input': true, 'is-danger': $v.form[field.name] && $v.form[field.name].$error }", :name="field.name", @blur="$v.form[field.name] && $v.form[field.name].$touch()" v-if="field.type === 'text'") 
+        date-picker(:date="form[field.name]", :option="field.datepickerOption", v-if="field.type === 'date'" @change="datePickerChanged(form, field.name, $event)" @cancel="datePickerCancelled(form, field.name, $event)")
+        span.select(v-if="field.type === 'select'")
+          select(v-model="form[field.name]", @change="$v.form[field.name] && $v.form[field.name].$touch()")
+            option(value='') {{field.placeholder}}
+            option(v-for="option in field.options", :value="option.value") {{option.text}}
         span.help.is-danger(v-for='v in field.namedValidators' v-show="$v.form[field.name] && $v.form[field.name].$dirty && !$v.form[field.name][v]") {{field.display_name}}{{field.errorMsg[v]}}
 
     div.control.is-horizontal
@@ -25,11 +35,6 @@ div.team_member_form
         label.label 证件号*
       p.control
         input.input(type="text", placeholder="请输入证件号码" name="id_number")
-    div.control.is-horizontal
-      div.control-label
-        label.label 生日*
-      p.control
-        date-picker(:date="startTime", :option="option", :limit="limit")
     div.control.is-horizontal
       div.control-label
         label.label 性别*
@@ -150,72 +155,18 @@ export default {
     }
   },
   data () {
-    let keys = Object.keys(this.$store.state.validations.form)
-    let form = keys.reduce( (form, key) => {
-      form[key] = ""
+    let form = this.$store.state.fields.reduce( (form, field) => {
+
+      if (typeof field.value === 'object' && !Array.isArray(field.value)) {
+        form[field.name] = Object.assign({}, field.value)
+      } else {
+        form[field.name] = field.value
+      }
       return form
-      }, {});
+      }, {})
     console.log(form)
     return {
-      form: form,
-      date: {
-        time: ''
-      },
-      // for Vue 2.0
-      startTime: {
-        time: ''
-      },
-      endtime: {
-        time: ''
-      },
-
-      option: {
-        type: 'day',
-        week: ['一', '二', '三', '四', '五', '六', '日'],
-        month: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
-        format: 'YYYY-MM-DD',
-        placeholder: '请选择',
-        inputStyle: {
-          'display': 'inline-block',
-          'padding': '6px',
-          'line-height': '22px',
-          'font-size': '16px',
-          'border': '2px solid #fff',
-          'border-radius': '2px',
-          'color': '#5F5F5F'
-        },
-        color: {
-          header: '#ccc',
-          headerText: '#f00'
-        },
-        buttons: {
-          ok: 'Ok',
-          cancel: 'Cancel'
-        },
-        overlayOpacity: 0.5, // 0.5 as default
-        dismissible: true // as true as default
-      },
-      timeoption: {
-        type: 'min',
-        week: ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'],
-        month: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-        format: 'YYYY-MM-DD HH:mm'
-      },
-      multiOption: {
-        type: 'multi-day',
-        week: ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'],
-        month: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-        format:"YYYY-MM-DD HH:mm"
-      },
-      limit: [{
-        type: 'weekday',
-        available: [1, 2, 3, 4, 5]
-      },
-      {
-        type: 'fromto',
-        from: '2016-02-01',
-        to: '2016-02-20'
-      }]
+      form: form
     }
   },
   props: ['show_form', 'rules'],
@@ -228,6 +179,15 @@ export default {
     'date-picker': myDatepicker
   },
   methods: {
+    datePickerChanged(form, name, event){
+      form[name] = Object.assign({}, {time: event})
+      console.log(form, name, event)
+      this.$v.form[name] && this.$v.form[name].$touch()
+    },
+    datePickerCancelled(form, name, event){
+      console.log(form, name, event)
+      this.$v.form[name] && this.$v.form[name].$touch()
+    },
     getValidationMessage(v) {
       return validationMessageMap[v]
     },
