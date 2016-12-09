@@ -1,5 +1,6 @@
 import R from 'ramda'
 import {validationsMap, validationMessageMap} from '../validators/index'
+import { nationalities } from '../helpers/data'
 
 const getValidationNameParams = (v) =>  {
   var [inputs, vName, params] = [v.split("("), v, []]
@@ -71,7 +72,12 @@ const setCheckboxesField = field => {
   }
   return field
 }
-
+const setNationalitiesData = field => {
+  if(field.type==="nationality") {
+    field.nationalities = nationalities.nationalities
+  }
+  return field
+}
 const setErrorMsg = field => {
   field.errorMsg = field.errorMsg || {}
   if(field.validators) {
@@ -88,7 +94,7 @@ const setErrorMsg = field => {
   return field
 }
 
-const transformField = field => R.compose(setDateField, setCheckboxesField, setErrorMsg)(field)
+const transformField = field => R.compose(setDateField, setCheckboxesField, setErrorMsg, setNationalitiesData)(field)
 
 const getValidations = fields => {
   return fields.filter((field)=> field.validators && field.validators.length > 0).reduce( (validations, field)=> { 

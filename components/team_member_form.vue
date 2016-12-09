@@ -20,6 +20,11 @@ div.team_member_form
           select(v-model="form[field.name]", @change="$v.form[field.name] && $v.form[field.name].$touch()")
             option(value='') {{field.placeholder}}
             option(v-for="option in field.options", :value="option.value") {{option.text}}
+        span.select(v-if="field.type === 'nationality'")
+          select(v-model="form[field.name]", @change="$v.form[field.name] && $v.form[field.name].$touch()")
+            option(value='') {{field.placeholder}}
+            option(v-for="option in field.nationalities", :value="option.en_name") {{option.name}}
+        region-selector(v-if="field.type === 'region'", @change="regionChanged(form, field.name, $event)")
         span.help.is-danger(v-for='v in field.namedValidators' v-show="$v.form[field.name] && $v.form[field.name].$dirty && !$v.form[field.name][v]") {{field.display_name}}{{field.errorMsg[v]}}
 
     div.control.is-horizontal
@@ -137,6 +142,7 @@ div.team_member_form
 
 <script>
 import myDatepicker from './vue_datepicker.vue'
+import RegionSelector from './region_selector.vue'
 import {validationMessageMap} from '../validators/index'
 import { validateModel } from 'vuelidate'
 
@@ -164,7 +170,6 @@ export default {
       }
       return form
       }, {})
-    console.log(form)
     return {
       form: form
     }
@@ -176,26 +181,28 @@ export default {
     }
   },
   components: {
-    'date-picker': myDatepicker
+    'date-picker': myDatepicker,
+    RegionSelector
   },
   methods: {
     datePickerChanged(form, name, event){
       form[name] = Object.assign({}, {time: event})
-      console.log(form, name, event)
       this.$v.form[name] && this.$v.form[name].$touch()
     },
     datePickerCancelled(form, name, event){
-      console.log(form, name, event)
       this.$v.form[name] && this.$v.form[name].$touch()
     },
     getValidationMessage(v) {
       return validationMessageMap[v]
     },
+    regionChanged(form, name, region) {
+      form[name] = Object.assign({}, region)
+      this.$v.form[name] && this.$v.form[name].$touch()
+    },
     form_cancelled() {
       this.$emit("form_cancelled")
     },
     form_saved() {
-      console.log(this.form, this.$v)
       this.$v.$touch()
       if (!this.$v.$error) {
           this.$emit("form_saved")

@@ -35,7 +35,8 @@ const store = new Vuex.Store({
         {name:"gender", type: 'select', validators: ['required'], display_name: "性别", value: '', placeholder: '请选择性别', options: [{value: "F", text:"女"}, {value: "M", text:"男"}]},
         {name:"cert_type", type: 'select', validators: ['required'], display_name: "证件类型", value: '', placeholder: '请选择证件类型', options: [{value: "id_card", text:"身份证"}, {value: "passport", text:"护照"}]},
         {name:"blood_type", type: 'select', validators: ['required'], display_name: "血型", value: '', placeholder: '请选择血型', options: [{value: "A", text:"A"}, {value: "B", text:"B"}, {value: "AB", text:"AB"}, {value: "O", text:"O"}]},
-      
+        {name:"region", type: 'region', validators: ['regionRequired'], display_name: "地区", value: '', placeholder: '请输入地区'},
+        {name:"nationality", type: 'nationality', validators: ['required'], display_name: "国籍", value: '', placeholder: '请输入国籍'},
       ]
       commit('SET_FIELDS', fields)
       commit('SET_VALIDATIONS')
