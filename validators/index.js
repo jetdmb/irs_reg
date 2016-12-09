@@ -19,10 +19,24 @@ const dateRequired = value => {
 }
 
 const regionRequired = value => {
-  console.log("regionRequired", value, value.country, !!value && !!value.country)
   return !!value && !!value.country
 }
 
-const validationsMap = { required, email, phone, dateRange, minLength, maxLength, between, dateRequired, regionRequired}
-const validationMessageMap = { regionRequired:'不能为空', dateRequired: "不能为空", required: "不能为空", email: "格式不正确", phone: "格式不正确", between: "必须在$1和$2之间", dateRange: "必须在$1和$2之间"}
+const phoneInMainland = associatedField => function (value, parentVm) {
+  if (parentVm[associatedField] && parentVm[associatedField].country &&  parentVm[associatedField].country.name === "大陆") {
+    return !value || validator.isMobilePhone(value, 'zh-CN')
+  } else {
+    return true
+  }
+}
+
+const validationsMap = { required, email, phone, dateRange, minLength, maxLength, between, dateRequired, regionRequired, phoneInMainland}
+const validationMessageMap = { regionRequired:'不能为空', 
+dateRequired: "不能为空", 
+required: "不能为空", 
+email: "格式不正确", 
+phone: "格式不正确", 
+between: "必须在$1和$2之间", 
+dateRange: "必须在$1和$2之间",
+phoneInMainland: "格式不正确"}
 export {email, phone, validationsMap, validationMessageMap}

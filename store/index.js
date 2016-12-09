@@ -27,7 +27,7 @@ const store = new Vuex.Store({
       let fields = [
         {name:"name", type: 'text', validators: ['required'], display_name: "姓名", value: '', placeholder: '请输入姓名'},
         {name:"email", type: 'email', validators: ['required', 'email'], display_name: "邮箱", value: '', placeholder: '请输入电子邮箱'},
-        {name:"phone", type: 'text', validators: ['required', 'phone'], display_name: "手机号码", value: '', placeholder: '请输入手机号码'},
+        {name:"phone", type: 'text', validators: ['required', "phoneInMainland('region')"], display_name: "手机号码", value: '', placeholder: '请输入手机号码'},
         {name:"date", type: 'date', validators: ['dateRequired', "dateRange('2016-12-05', '2016-12-18')"], display_name: "测试日期", value: '', placeholder: '请输入测试日期'},
         {name:"number", type: 'number', validators: ['required', "between(20, 50)"], display_name: "测试Range数字", value: '', placeholder: '请输入测试日期'},
         {name:"checkboxes", type: 'checkboxes', validators: ['required'], display_name: "多选框", value: '', placeholder: '请输入多选框', options: 
