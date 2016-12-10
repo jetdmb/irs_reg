@@ -7,7 +7,7 @@ module.exports = {
       vendor: 'vendor.js', // default: vendor.bundle.js
       app: 'app.js' // default: nuxt.bundle.js
     },
-    vendor: ['validator', 'vuelidate', 'moment']
+    vendor: ['validator', 'vuelidate', 'moment', "plupload", './node_modules/qiniu-js/dist/qiniu.js']
   },
   plugins: ["~plugins/vuelidate.js"],
   loading: false,
