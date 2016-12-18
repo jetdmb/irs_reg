@@ -93,8 +93,17 @@ const setErrorMsg = field => {
   }
   return field
 }
-
-const transformField = field => R.compose(setDateField, setCheckboxesField, setErrorMsg, setNationalitiesData)(field)
+const setHasRequired = field => {
+  field.errorMsg = field.errorMsg || {}
+  if(field.validators) {
+    
+    field.hasRequired = field.validators.some( function(v, index) {
+      return v.toLowerCase().indexOf('required') > -1
+    }) 
+  }
+  return field
+}
+const transformField = field => R.compose(setDateField, setCheckboxesField, setErrorMsg, setNationalitiesData, setHasRequired)(field)
 
 const getValidations = fields => {
   return fields.filter((field)=> field.validators && field.validators.length > 0).reduce( (validations, field)=> { 

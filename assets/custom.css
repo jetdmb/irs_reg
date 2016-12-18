@@ -1,0 +1,127 @@
+body {
+  color: #313131;
+}
+.button.irs-red:hover, .button.irs-red:focus, .button.irs-ed.is-active {
+    background-color: #ff5000;
+    border-color: transparent;
+    color: white;
+}
+
+.button.irs-red {
+    background-color: #ff5000;
+    border-width: 0;
+    color: white;
+}
+
+input.irs-input {
+  background-color: #f2f2f2;
+  color: #898989;
+  border-style: hidden;
+}
+.irs-page-container {
+  background-color: #f2f2f2;
+}
+
+.act-txt {
+  background-color: transparent !important;
+  border: none !important;
+  padding: 0 !important;
+}
+
+input + a {
+  margin-left: 5px;
+}
+.control.has-addons .button:first-child, .control.has-addons .input:first-child, .control.has-addons .select:first-child {
+  border-radius: 3px
+}
+.control.has-addons .button:last-child, .control.has-addons .input:last-child, .control.has-addons .select:last-child {
+  border-radius: 3px  
+}
+
+.table.is-striped tbody tr:nth-child(even):hover {
+  background-color: #ffffff;
+}
+
+.table.is-striped tbody tr:nth-child(even) {
+  background-color: #ffffff;
+}
+
+.button.irs-submit:hover, .button.irs-submit:focus, .button.irs-submit.is-active {
+    background-color: #ff5000;
+    border-color: transparent;
+    color: white;
+}
+
+.button.irs-submit {
+    background-color: #ff5000;
+    border-width: 0;
+    color: white;
+    border-radius: 16px !important;
+    min-width: 100px;
+}
+.button.irs-button {
+    border-radius: 16px !important;
+    min-width: 100px;
+}
+
+.notification.irs-msg {
+  background-color: #fff0eb;
+  color: #ff5000;
+  margin-bottom: 0;
+}
+.notification.irs-msg span {
+  display: block;
+  text-align: center;
+}
+
+.card-header-right {
+    -ms-flex-align: center;
+    align-items: center;
+    cursor: pointer;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-pack: center;
+    justify-content: center;
+}
+
+.card-header-item {
+    -ms-flex-align: center;
+    align-items: center;
+    cursor: pointer;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-pack: center;
+    justify-content: center;
+}
+.card-header-center {
+    -ms-flex-align: center;
+    align-items: center;
+    cursor: pointer;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-pack: center;
+    justify-content: center;
+    flex-grow: 1;
+}
+
+.card-footer-left {
+    -ms-flex-align: center;
+    align-items: center;
+    cursor: pointer;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-pack: center;
+    justify-content: start;
+    flex-grow: 1;
+    padding: 10px 15px;
+}
+.card-footer-right {
+    -ms-flex-align: center;
+    align-items: center;
+    cursor: pointer;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-pack: center;
+    justify-content: end;
+    padding: 10px 15px;
+}

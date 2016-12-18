@@ -1,20 +1,26 @@
 <template lang="pug">
 p
-  span.select
+  span(:class="{'select': true, 'is-danger': validator}")
     select(@change="countryChanged", v-model="selectedCountryID")
       option(value='') 请选择
       option(v-for="country in data", :value="country.id") {{country.name}}
-  span.select
-    select(@change="provinceChanged", v-if="showProvince", v-model="selectedProvinceID")
+  span(v-if="showProvince", :class="{'select': true, 'is-danger': validator}")
+    select(@change="provinceChanged", v-model="selectedProvinceID")
       option(v-for="province in provinces", :value="province.id") {{province.name}}
-  span.select
-    select(@change="cityChanged", v-if="showCity", v-model="selectedCityID")
+  span(v-if="showCity", :class="{'select': true, 'is-danger': validator}")
+    select(@change="cityChanged", v-model="selectedCityID")
       option(v-for="city in cities", :value="city.id") {{city.name}}
 </template>
 
 <script>
 import { district } from '../helpers/data'
 export default {
+  props: {
+    validator: {
+      type: Boolean,
+      required: true
+    },
+  },
   data: () => {
     return {
       region: {},
@@ -74,4 +80,6 @@ export default {
 </script>
 
 <style lang="stylus">
+span.select:not(:first-child) 
+  margin-left: 5px
 </style>

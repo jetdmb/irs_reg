@@ -1,5 +1,5 @@
 <template lang="pug">
-div.team_member_form
+div.additional-form
   div.container
     div.control.is-horizontal(v-for='field in fields')
       div.control-label
@@ -24,11 +24,11 @@ div.team_member_form
             option(v-for="option in field.nationalities", :value="option.en_name") {{option.name}}
         region-selector(v-if="field.type === 'region'", @change="regionChanged(form, field.name, $event)", :validator="$v.form[field.name] && $v.form[field.name].$error")
         
-
-    nav.level.form-actions
-      div.level-item.has-text-centered
-        a.button(@click.stop.prevent="form_cancelled") 取消
-        a.button.is-primary(@click.stop.prevent="form_saved") 提交
+  slot(name="additional")
+  nav.level.form-actions
+    div.level-item.has-text-centered
+      a.button.irs-button(@click.stop.prevent="form_cancelled") 取消
+      a.button.irs-submit(@click.stop.prevent="form_saved") 提交
   
 </template>
 
@@ -109,7 +109,7 @@ export default {
 </script>
 
 <style lang="stylus">
-.team_member_form
+.additional-form
   div.container
     padding: 15px 0
   margin: 10px 0 0
@@ -170,7 +170,7 @@ export default {
     
     
 @media (max-width: 768px) 
-  .team_member_form
+  .additional-form
     .checkbox, .radio
       display: block
     div.control.is-horizontal.no-flex-mobile
