@@ -14,6 +14,8 @@ div.intro-container
       p
         router-link.button(to="/form") 报名表单(updated to design version)
       p
+        router-link.button(to="/order_detail") 订单详情(updated to design version)
+      p
         router-link.button(to="/race") 赛事页面
       p
         router-link.button(to="/team")  团队报名页面(含表单)  
