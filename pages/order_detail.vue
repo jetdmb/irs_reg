@@ -1,5 +1,5 @@
 <template lang="pug">
-div.confirm-reg-container
+div.order-detail-container
   section.section
     div.container.individual
       div.team-member-container.card.is-fullwidth
@@ -161,7 +161,7 @@ export default {
 padh-small = 10px
 padh-large = 30px
 
-.confirm-reg-container
+.order-detail-container
   section.section 
     padding: 20px padh-large
     background-color: transparent
@@ -178,20 +178,22 @@ padh-large = 30px
         height: 32px
         line-height: 32px
     &.reg-success
-      background-color: #ffffff
-      padding-top: 20px !important
+      padding: 0 !important
       &:last-child
         margin-top: 20px
-      p
-        margin: 3px 0
-        label
-          display: inline-block
-          min-width: 50px
-        span
-          display: inline-block
-          &.msg
-            font-weight: normal
-            color: #999999
+      div.container
+        background-color: #ffffff
+        padding: 20px padh-large
+        p
+          margin: 3px 0
+          label
+            display: inline-block
+            min-width: 50px
+          span
+            display: inline-block
+            &.msg
+              font-weight: normal
+              color: #999999
       div.title-wrapper
         -ms-flex-align: stretch
         align-items: stretch
@@ -220,7 +222,7 @@ padh-large = 30px
             box-shadow: 0 0 0px rgba(10, 10, 10, 0.1), 0 0 0 1px rgba(10, 10, 10, 0.1)
           .card-body
             >p
-              padding-left: padh-large
+              padding-left: padh-small
               label
                 display: inline-block
                 min-width: 75px
@@ -351,7 +353,7 @@ padh-large = 30px
     margin-bottom: 0
 
 @media (max-width: 768px) 
-  .confirm-reg-container
+  .order-detail-container
     section.section 
       padding: 20px padh-small
       div.container
