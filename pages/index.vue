@@ -8,6 +8,10 @@ div.intro-container
       p
         router-link.button(to="/confirm_registration") 确认报名信息(updated to design version)
       p
+        router-link.button(to="/confirm_reg_individual") 确认报名信息个人(updated to design version)
+      p
+        router-link.button(to="/reg_success") 报名成功(updated to design version)
+      p
         router-link.button(to="/form") 报名表单(updated to design version)
       p
         router-link.button(to="/race") 赛事页面

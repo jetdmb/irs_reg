@@ -12,7 +12,24 @@ body {
     border-width: 0;
     color: white;
 }
+.button.is-outlined.irs-red:hover, .button.is-outlined.irs-red:focus, .button.is-outlined.irs-ed.is-active {
+    background-color: transparent;
+    border-color: #ff5000;
+    color: #ff5000;
+}
 
+.button.is-outlined.irs-red {
+    background-color: transparent;
+    border-color: #ff5000;
+    border-width: 1px;
+    color: #ff5000;
+}
+.mw-120 {
+  min-width: 120px !important
+}
+.br-16 {
+  border-radius: 16px
+}
 input.irs-input {
   background-color: #f2f2f2;
   color: #898989;
@@ -124,4 +141,8 @@ input + a {
     -ms-flex-pack: center;
     justify-content: end;
     padding: 10px 15px;
+}
+
+hr {
+  margin: 0;
 }
